@@ -12,9 +12,9 @@ using Microsoft.Toolkit.HighPerformance.Extensions;
 namespace Microsoft.Toolkit.HighPerformance.Streams
 {
     /// <summary>
-    /// An <see cref="ISpanOwner"/> implementation wrapping an array.
+    /// An <see cref="IBufferOwner"/> implementation wrapping an array.
     /// </summary>
-    internal readonly struct ArrayOwner : ISpanOwner
+    internal struct ArrayOwner : IBufferOwner
     {
         /// <summary>
         /// The wrapped <see cref="byte"/> array.
@@ -32,6 +32,11 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
         private readonly int length;
 
         /// <summary>
+        /// The current position within <see cref="array"/>.
+        /// </summary>
+        private int position;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ArrayOwner"/> struct.
         /// </summary>
         /// <param name="array">The wrapped <see cref="byte"/> array.</param>
@@ -42,6 +47,7 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
             this.array = array;
             this.offset = offset;
             this.length = length;
+            this.position = 0;
         }
 
         /// <summary>
@@ -54,26 +60,44 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
         }
 
         /// <inheritdoc/>
-        public int Length
+        public int CurrentLength
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => this.length;
         }
 
         /// <inheritdoc/>
-        public Span<byte> Span
+        public int ReadableLength
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get
-            {
-#if SPAN_RUNTIME_SUPPORT
-                ref byte r0 = ref this.array.DangerousGetReferenceAt(this.offset);
+            get => this.offset + this.length - this.position;
+        }
 
-                return MemoryMarshal.CreateSpan(ref r0, this.length);
+        /// <inheritdoc/>
+        public int Position
+        {
+            get => this.position;
+            set => this.position = value;
+        }
+
+        /// <inheritdoc/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Advance(int count)
+        {
+            this.position += count;
+        }
+
+        /// <inheritdoc/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Span<byte> GetSpan(int sizeHint = 0)
+        {
+#if SPAN_RUNTIME_SUPPORT
+            ref byte r0 = ref this.array.DangerousGetReferenceAt(this.offset);
+
+            return MemoryMarshal.CreateSpan(ref r0, this.length);
 #else
-                return this.array.AsSpan(this.offset, this.length);
+            return this.array.AsSpan(this.offset, this.length);
 #endif
-            }
         }
     }
 }

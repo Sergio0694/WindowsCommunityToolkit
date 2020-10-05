@@ -13,7 +13,7 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
     /// </summary>
     /// <typeparam name="TSource">The type of source to use for the underlying data.</typeparam>
     internal sealed class IMemoryOwnerStream<TSource> : MemoryStream<TSource>
-        where TSource : struct, ISpanOwner
+        where TSource : struct, IBufferOwner
     {
         /// <summary>
         /// The <see cref="IDisposable"/> instance currently in use.

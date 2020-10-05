@@ -19,11 +19,11 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
         {
             MemoryStream.ValidateDisposed(this.disposed);
 
-            Span<byte> source = this.source.Span.Slice(this.position);
-
-            this.position += source.Length;
+            Span<byte> source = this.source.GetSpan();
 
             destination.Write(source);
+
+            this.source.Advance(source.Length);
         }
 
         /// <inheritdoc/>
@@ -79,15 +79,13 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
         {
             MemoryStream.ValidateDisposed(this.disposed);
 
-            int
-                bytesAvailable = this.source.Length - this.position,
-                bytesCopied = Math.Min(bytesAvailable, buffer.Length);
+            int bytesCopied = Math.Min(this.source.ReadableLength, buffer.Length);
 
-            Span<byte> source = this.source.Span.Slice(this.position, bytesCopied);
+            Span<byte> source = this.source.GetSpan();
 
             source.CopyTo(buffer);
 
-            this.position += bytesCopied;
+            this.source.Advance(bytesCopied);
 
             return bytesCopied;
         }
@@ -98,14 +96,14 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
             MemoryStream.ValidateDisposed(this.disposed);
             MemoryStream.ValidateCanWrite(CanWrite);
 
-            Span<byte> destination = this.source.Span.Slice(this.position);
+            Span<byte> destination = this.source.GetSpan(buffer.Length);
 
             if (!buffer.TryCopyTo(destination))
             {
                 MemoryStream.ThrowArgumentExceptionForEndOfStreamOnWrite();
             }
 
-            this.position += buffer.Length;
+            this.source.Advance(buffer.Length);
         }
     }
 }

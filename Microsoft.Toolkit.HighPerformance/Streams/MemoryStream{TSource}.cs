@@ -22,7 +22,7 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
     /// only exposed as a <see cref="Stream"/> anyway, so the generated code would be the same.
     /// </remarks>
     internal partial class MemoryStream<TSource> : Stream
-        where TSource : struct, ISpanOwner
+        where TSource : struct, IBufferOwner
     {
         /// <summary>
         /// Indicates whether <see cref="source"/> can be written to.
@@ -33,11 +33,6 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
         /// The <typeparamref name="TSource"/> instance currently in use.
         /// </summary>
         private TSource source;
-
-        /// <summary>
-        /// The current position within <see cref="source"/>.
-        /// </summary>
-        private int position;
 
         /// <summary>
         /// Indicates whether or not the current instance has been disposed
@@ -84,7 +79,7 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
             {
                 MemoryStream.ValidateDisposed(this.disposed);
 
-                return this.source.Length;
+                return this.source.CurrentLength;
             }
         }
 
@@ -96,16 +91,16 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
             {
                 MemoryStream.ValidateDisposed(this.disposed);
 
-                return this.position;
+                return this.Position;
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             set
             {
                 MemoryStream.ValidateDisposed(this.disposed);
-                MemoryStream.ValidatePosition(value, this.source.Length);
+                MemoryStream.ValidatePosition(value, this.source.CurrentLength);
 
-                this.position = unchecked((int)value);
+                this.Position = unchecked((int)value);
             }
         }
 
@@ -205,14 +200,14 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
             long index = origin switch
             {
                 SeekOrigin.Begin => offset,
-                SeekOrigin.Current => this.position + offset,
-                SeekOrigin.End => this.source.Length + offset,
+                SeekOrigin.Current => this.source.Position + offset,
+                SeekOrigin.End => this.source.CurrentLength + offset,
                 _ => MemoryStream.ThrowArgumentExceptionForSeekOrigin()
             };
 
-            MemoryStream.ValidatePosition(index, this.source.Length);
+            MemoryStream.ValidatePosition(index, this.source.CurrentLength);
 
-            this.position = unchecked((int)index);
+            this.source.Position = unchecked((int)index);
 
             return index;
         }
@@ -229,17 +224,15 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
             MemoryStream.ValidateDisposed(this.disposed);
             MemoryStream.ValidateBuffer(buffer, offset, count);
 
-            int
-                bytesAvailable = this.source.Length - this.position,
-                bytesCopied = Math.Min(bytesAvailable, count);
+            int bytesCopied = Math.Min(this.source.ReadableLength, count);
 
             Span<byte>
-                source = this.source.Span.Slice(this.position, bytesCopied),
+                source = this.source.GetSpan(),
                 destination = buffer.AsSpan(offset, bytesCopied);
 
             source.CopyTo(destination);
 
-            this.position += bytesCopied;
+            this.source.Advance(bytesCopied);
 
             return bytesCopied;
         }
@@ -249,12 +242,18 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
         {
             MemoryStream.ValidateDisposed(this.disposed);
 
-            if (this.position == this.source.Length)
+            Span<byte> source = this.source.GetSpan();
+
+            if ((uint)source.Length > 0u)
             {
-                return -1;
+                int result = source[0];
+
+                this.source.Advance(1);
+
+                return result;
             }
 
-            return this.source.Span[this.position++];
+            return -1;
         }
 
         /// <inheritdoc/>
@@ -266,14 +265,14 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
 
             Span<byte>
                 source = buffer.AsSpan(offset, count),
-                destination = this.source.Span.Slice(this.position);
+                destination = this.source.GetSpan(count);
 
             if (!source.TryCopyTo(destination))
             {
                 MemoryStream.ThrowArgumentExceptionForEndOfStreamOnWrite();
             }
 
-            this.position += source.Length;
+            this.source.Advance(count);
         }
 
         /// <inheritdoc/>
@@ -282,12 +281,16 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
             MemoryStream.ValidateDisposed(this.disposed);
             MemoryStream.ValidateCanWrite(CanWrite);
 
-            if (this.position == this.source.Length)
+            Span<byte> destination = this.source.GetSpan(1);
+
+            if ((uint)destination.Length >= 1)
             {
                 MemoryStream.ThrowArgumentExceptionForEndOfStreamOnWrite();
             }
 
-            this.source.Span[this.position++] = value;
+            destination[0] = value;
+
+            this.source.Advance(1);
         }
 
         /// <inheritdoc/>

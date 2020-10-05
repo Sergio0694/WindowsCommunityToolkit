@@ -9,9 +9,9 @@ using System.Runtime.CompilerServices;
 namespace Microsoft.Toolkit.HighPerformance.Streams
 {
     /// <summary>
-    /// An <see cref="ISpanOwner"/> implementation wrapping a <see cref="MemoryManager{T}"/> of <see cref="byte"/> instance.
+    /// An <see cref="IBufferOwner"/> implementation wrapping a <see cref="MemoryManager{T}"/> of <see cref="byte"/> instance.
     /// </summary>
-    internal readonly struct MemoryManagerOwner : ISpanOwner
+    internal struct MemoryManagerOwner : IBufferOwner
     {
         /// <summary>
         /// The wrapped <see cref="MemoryManager{T}"/> instance.
@@ -29,6 +29,11 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
         private readonly int length;
 
         /// <summary>
+        /// The current position within <see cref="memoryManager"/>.
+        /// </summary>
+        private int position;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MemoryManagerOwner"/> struct.
         /// </summary>
         /// <param name="memoryManager">The wrapped <see cref="MemoryManager{T}"/> instance.</param>
@@ -39,27 +44,46 @@ namespace Microsoft.Toolkit.HighPerformance.Streams
             this.memoryManager = memoryManager;
             this.offset = offset;
             this.length = length;
+            this.position = 0;
         }
 
         /// <inheritdoc/>
-        public int Length
+        public int CurrentLength
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => this.length;
         }
 
         /// <inheritdoc/>
-        public Span<byte> Span
+        public int ReadableLength
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get
-            {
-                // We can't use the same trick we use for arrays to optimize the creation of
-                // the offset span, as otherwise a bugged MemoryManager<T> instance returning
-                // a span of an incorrect size could cause an access violation. Instead, we just
-                // get the span and then slice it, which will validate both offset and length.
-                return this.memoryManager.GetSpan().Slice(this.offset, this.length);
-            }
+            get => this.offset + this.length - this.position;
+        }
+
+        /// <inheritdoc/>
+        public int Position
+        {
+            get => this.position;
+            set => this.position = value;
+        }
+
+        /// <inheritdoc/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Advance(int count)
+        {
+            this.position += count;
+        }
+
+        /// <inheritdoc/>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Span<byte> GetSpan(int sizeHint = 0)
+        {
+            // We can't use the same trick we use for arrays to optimize the creation of
+            // the offset span, as otherwise a bugged MemoryManager<T> instance returning
+            // a span of an incorrect size could cause an access violation. Instead, we just
+            // get the span and then slice it, which will validate both offset and length.
+            return this.memoryManager.GetSpan().Slice(this.offset, this.length);
         }
     }
 }
