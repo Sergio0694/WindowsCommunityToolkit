@@ -230,6 +230,32 @@ namespace Microsoft.Toolkit.HighPerformance.Buffers
             this.index += count;
         }
 
+        /// <summary>
+        /// Advances the current writes to a specific position.
+        /// </summary>
+        /// <param name="position">The position to advance to.</param>
+        internal void AdvanceTo(int position)
+        {
+            T[]? array = this.array;
+
+            if (array is null)
+            {
+                ThrowObjectDisposedException();
+            }
+
+            if (position < 0)
+            {
+                ThrowArgumentOutOfRangeExceptionForNegativeCount();
+            }
+
+            if (position > array!.Length)
+            {
+                ThrowArgumentExceptionForAdvancedTooFar();
+            }
+
+            this.index = position;
+        }
+
         /// <inheritdoc/>
         public Memory<T> GetMemory(int sizeHint = 0)
         {
