@@ -92,7 +92,7 @@ namespace Microsoft.Toolkit.HighPerformance.Helpers
                 numBatches = (int)(clipBatches <= cores ? clipBatches : cores),
                 batchHeight = 1 + ((memory.Height - 1) / numBatches);
 
-            var actionInvoker = new InActionInvokerWithReadOnlyMemory2D<TItem, TAction>(batchHeight, memory, action);
+            InActionInvokerWithReadOnlyMemory2D<TItem, TAction> actionInvoker = new(batchHeight, memory, action);
 
             // Skip the parallel invocation when possible
             if (numBatches == 1)

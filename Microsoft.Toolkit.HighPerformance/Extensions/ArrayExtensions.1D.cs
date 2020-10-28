@@ -139,7 +139,7 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static SpanEnumerable<T> Enumerate<T>(this T[] array)
         {
-            return new SpanEnumerable<T>(array);
+            return new(array);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         public static SpanTokenizer<T> Tokenize<T>(this T[] array, T separator)
             where T : IEquatable<T>
         {
-            return new SpanTokenizer<T>(array, separator);
+            return new(array, separator);
         }
 
         /// <summary>

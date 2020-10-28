@@ -235,7 +235,7 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Span2D<T> AsSpan2D<T>(this T[,,] array, int depth)
         {
-            return new Span2D<T>(array, depth);
+            return new(array, depth);
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Memory2D<T> AsMemory2D<T>(this T[,,] array, int depth)
         {
-            return new Memory2D<T>(array, depth);
+            return new(array, depth);
         }
 
         /// <summary>

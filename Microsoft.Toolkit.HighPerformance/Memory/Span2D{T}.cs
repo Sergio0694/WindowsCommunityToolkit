@@ -547,7 +547,7 @@ namespace Microsoft.Toolkit.HighPerformance.Memory
 
             OverflowHelper.EnsureIsInNativeIntRange(height, width, pitch);
 
-            return new Span2D<T>(ref value, height, width, pitch);
+            return new(ref value, height, width, pitch);
         }
 #endif
 
@@ -978,11 +978,11 @@ namespace Microsoft.Toolkit.HighPerformance.Memory
 #if SPAN_RUNTIME_SUPPORT
             ref T r0 = ref this.span.DangerousGetReferenceAt(shift);
 
-            return new Span2D<T>(ref r0, height, width, pitch);
+            return new(ref r0, height, width, pitch);
 #else
             IntPtr offset = this.Offset + (shift * (nint)(uint)Unsafe.SizeOf<T>());
 
-            return new Span2D<T>(this.Instance, offset, height, width, pitch);
+            return new(this.Instance, offset, height, width, pitch);
 #endif
         }
 
@@ -1152,6 +1152,6 @@ namespace Microsoft.Toolkit.HighPerformance.Memory
         /// Implicily converts a given 2D array into a <see cref="Span2D{T}"/> instance.
         /// </summary>
         /// <param name="array">The input 2D array to convert.</param>
-        public static implicit operator Span2D<T>(T[,]? array) => new Span2D<T>(array);
+        public static implicit operator Span2D<T>(T[,]? array) => new(array);
     }
 }

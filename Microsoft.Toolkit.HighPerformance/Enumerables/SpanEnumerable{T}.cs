@@ -75,9 +75,9 @@ namespace Microsoft.Toolkit.HighPerformance.Enumerables
                 // first item as the target reference, and the length as a host for the
                 // current original offset. This is not possible on eg. .NET Standard 2.0,
                 // as we lack the API to create Span<T>-s from arbitrary references.
-                return new Item(ref ri, this.index);
+                return new(ref ri, this.index);
 #else
-                return new Item(this.span, this.index);
+                return new(this.span, this.index);
 #endif
             }
         }

@@ -102,7 +102,7 @@ namespace Microsoft.Toolkit.HighPerformance.Helpers
 
             int batchSize = 1 + ((memory.Length - 1) / numBatches);
 
-            var actionInvoker = new InActionInvoker<TItem, TAction>(batchSize, memory, action);
+            InActionInvoker<TItem, TAction> actionInvoker = new(batchSize, memory, action);
 
             // Run the batched operations in parallel
             Parallel.For(

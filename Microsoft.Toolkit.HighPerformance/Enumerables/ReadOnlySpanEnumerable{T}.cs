@@ -70,9 +70,9 @@ namespace Microsoft.Toolkit.HighPerformance.Enumerables
                 ref T ri = ref Unsafe.Add(ref r0, (nint)(uint)this.index);
 
                 // See comment in SpanEnumerable<T> about this
-                return new Item(ref ri, this.index);
+                return new(ref ri, this.index);
 #else
-                return new Item(this.span, this.index);
+                return new(this.span, this.index);
 #endif
             }
         }

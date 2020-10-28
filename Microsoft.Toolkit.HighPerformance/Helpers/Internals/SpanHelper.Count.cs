@@ -145,7 +145,7 @@ namespace Microsoft.Toolkit.HighPerformance.Helpers.Internals
             // Skip the initialization overhead if there are not enough items
             if (length >= Vector<T>.Count)
             {
-                var vc = new Vector<T>(value);
+                Vector<T> vc = new(value);
 
                 do
                 {

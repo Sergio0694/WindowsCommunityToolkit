@@ -38,11 +38,11 @@ namespace Microsoft.Toolkit.HighPerformance.Memory
             ref T r1 = ref Unsafe.Add(ref r0, startIndex);
 
 #if SPAN_RUNTIME_SUPPORT
-            return new RefEnumerable<T>(ref r1, Width, 1);
+            return new(ref r1, Width, 1);
 #else
             IntPtr offset = RuntimeHelpers.GetObjectDataOrReferenceByteOffset(this.Instance, ref r1);
 
-            return new RefEnumerable<T>(this.Instance, offset, this.width, 1);
+            return new(this.Instance, offset, this.width, 1);
 #endif
         }
 
@@ -65,11 +65,11 @@ namespace Microsoft.Toolkit.HighPerformance.Memory
             ref T r1 = ref Unsafe.Add(ref r0, (nint)(uint)column);
 
 #if SPAN_RUNTIME_SUPPORT
-            return new RefEnumerable<T>(ref r1, Height, this.Stride);
+            return new(ref r1, Height, this.Stride);
 #else
             IntPtr offset = RuntimeHelpers.GetObjectDataOrReferenceByteOffset(this.Instance, ref r1);
 
-            return new RefEnumerable<T>(this.Instance, offset, Height, this.Stride);
+            return new(this.Instance, offset, Height, this.Stride);
 #endif
         }
 
@@ -81,7 +81,7 @@ namespace Microsoft.Toolkit.HighPerformance.Memory
         /// </returns>
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Enumerator GetEnumerator() => new Enumerator(this);
+        public Enumerator GetEnumerator() => new(this);
 
         /// <summary>
         /// Provides an enumerator for the elements of a <see cref="Span2D{T}"/> instance.

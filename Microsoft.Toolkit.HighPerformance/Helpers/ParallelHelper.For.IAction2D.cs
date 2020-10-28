@@ -270,7 +270,7 @@ namespace Microsoft.Toolkit.HighPerformance.Helpers
 
             int batchHeight = 1 + ((height - 1) / numBatches);
 
-            var actionInvoker = new Action2DInvoker<TAction>(top, bottom, left, right, batchHeight, action);
+            Action2DInvoker<TAction> actionInvoker = new(top, bottom, left, right, batchHeight, action);
 
             // Run the batched operations in parallel
             Parallel.For(

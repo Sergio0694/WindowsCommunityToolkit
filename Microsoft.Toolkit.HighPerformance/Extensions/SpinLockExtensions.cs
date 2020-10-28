@@ -17,7 +17,7 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         /// Enters a specified <see cref="SpinLock"/> instance and returns a wrapper to use to release the lock.
         /// This extension should be used though a <see langword="using"/> block or statement:
         /// <code>
-        /// SpinLock spinLock = new SpinLock();
+        /// SpinLock spinLock = new();
         ///
         /// using (SpinLockExtensions.Enter(&amp;spinLock))
         /// {
@@ -32,7 +32,7 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe UnsafeLock Enter(SpinLock* spinLock)
         {
-            return new UnsafeLock(spinLock);
+            return new(spinLock);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         /// Enters a specified <see cref="SpinLock"/> instance and returns a wrapper to use to release the lock.
         /// This extension should be used though a <see langword="using"/> block or statement:
         /// <code>
-        /// SpinLock spinLock = new SpinLock();
+        /// SpinLock spinLock = new();
         ///
         /// using (spinLock.Enter())
         /// {
@@ -97,14 +97,14 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Lock Enter(ref this SpinLock spinLock)
         {
-            return new Lock(ref spinLock);
+            return new(ref spinLock);
         }
 #else
         /// <summary>
         /// Enters a specified <see cref="SpinLock"/> instance and returns a wrapper to use to release the lock.
         /// This extension should be used though a <see langword="using"/> block or statement:
         /// <code>
-        /// private SpinLock spinLock = new SpinLock();
+        /// private SpinLock spinLock = new();
         ///
         /// public void Foo()
         /// {
@@ -123,7 +123,7 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Lock Enter(object owner, ref SpinLock spinLock)
         {
-            return new Lock(owner, ref spinLock);
+            return new(owner, ref spinLock);
         }
 #endif
 

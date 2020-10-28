@@ -135,12 +135,12 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
 #if SPAN_RUNTIME_SUPPORT
             ref T r0 = ref array.DangerousGetReferenceAt(row, 0);
 
-            return new RefEnumerable<T>(ref r0, width, 1);
+            return new(ref r0, width, 1);
 #else
             ref T r0 = ref array.DangerousGetReferenceAt(row, 0);
             IntPtr offset = array.DangerousGetObjectDataByteOffset(ref r0);
 
-            return new RefEnumerable<T>(array, offset, width, 1);
+            return new(array, offset, width, 1);
 #endif
         }
 
@@ -189,12 +189,12 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
 #if SPAN_RUNTIME_SUPPORT
             ref T r0 = ref array.DangerousGetReferenceAt(0, column);
 
-            return new RefEnumerable<T>(ref r0, height, width);
+            return new(ref r0, height, width);
 #else
             ref T r0 = ref array.DangerousGetReferenceAt(0, column);
             IntPtr offset = array.DangerousGetObjectDataByteOffset(ref r0);
 
-            return new RefEnumerable<T>(array, offset, height, width);
+            return new(array, offset, height, width);
 #endif
         }
 
@@ -208,7 +208,7 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Span2D<T> AsSpan2D<T>(this T[,]? array)
         {
-            return new Span2D<T>(array);
+            return new(array);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Span2D<T> AsSpan2D<T>(this T[,]? array, int row, int column, int height, int width)
         {
-            return new Span2D<T>(array, row, column, height, width);
+            return new(array, row, column, height, width);
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Memory2D<T> AsMemory2D<T>(this T[,]? array)
         {
-            return new Memory2D<T>(array);
+            return new(array);
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace Microsoft.Toolkit.HighPerformance.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Memory2D<T> AsMemory2D<T>(this T[,]? array, int row, int column, int height, int width)
         {
-            return new Memory2D<T>(array, row, column, height, width);
+            return new(array, row, column, height, width);
         }
 
 #if SPAN_RUNTIME_SUPPORT

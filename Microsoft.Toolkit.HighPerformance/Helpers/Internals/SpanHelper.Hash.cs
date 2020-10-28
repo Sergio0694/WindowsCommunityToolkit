@@ -106,8 +106,8 @@ namespace Microsoft.Toolkit.HighPerformance.Helpers.Internals
             if (Vector.IsHardwareAccelerated &&
                 length >= (Vector<byte>.Count << 3))
             {
-                var vh = new Vector<int>(5381);
-                var v33 = new Vector<int>(33);
+                Vector<int> vh = new(5381);
+                Vector<int> v33 = new(33);
 
                 // First vectorized loop, with 8 unrolled iterations.
                 // Assuming 256-bit registers (AVX2), a total of 256 bytes are processed
