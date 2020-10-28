@@ -60,10 +60,7 @@ namespace Microsoft.Toolkit.HighPerformance
         /// </summary>
         /// <param name="reference">The input <see cref="Ref{T}"/> instance.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator ReadOnlyRef<T>(Ref<T> reference)
-        {
-            return new(reference.Value);
-        }
+        public static implicit operator ReadOnlyRef<T>(Ref<T> reference) => new(reference.Value);
 #else
         /// <summary>
         /// The owner <see cref="object"/> the current instance belongs to
@@ -115,10 +112,7 @@ namespace Microsoft.Toolkit.HighPerformance
         /// </summary>
         /// <param name="reference">The input <see cref="Ref{T}"/> instance.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator ReadOnlyRef<T>(Ref<T> reference)
-        {
-            return new(reference.Owner, reference.Offset);
-        }
+        public static implicit operator ReadOnlyRef<T>(Ref<T> reference) => new(reference.Owner, reference.Offset);
 #endif
 
         /// <summary>
@@ -126,9 +120,6 @@ namespace Microsoft.Toolkit.HighPerformance
         /// </summary>
         /// <param name="reference">The input <see cref="ReadOnlyRef{T}"/> instance.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator T(ReadOnlyRef<T> reference)
-        {
-            return reference.Value;
-        }
+        public static implicit operator T(ReadOnlyRef<T> reference) => reference.Value;
     }
 }

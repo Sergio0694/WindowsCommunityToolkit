@@ -94,10 +94,7 @@ namespace Microsoft.Toolkit.HighPerformance
         /// </summary>
         /// <param name="reference">The input <see cref="Ref{T}"/> instance.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator NullableRef<T>(Ref<T> reference)
-        {
-            return new(reference.Span);
-        }
+        public static implicit operator NullableRef<T>(Ref<T> reference) => new(reference.Span);
 
         /// <summary>
         /// Explicitly gets the <typeparamref name="T"/> value from a given <see cref="NullableRef{T}"/> instance.
@@ -105,10 +102,7 @@ namespace Microsoft.Toolkit.HighPerformance
         /// <param name="reference">The input <see cref="NullableRef{T}"/> instance.</param>
         /// <exception cref="InvalidOperationException">Thrown if <see cref="HasValue"/> is <see langword="false"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static explicit operator T(NullableRef<T> reference)
-        {
-            return reference.Value;
-        }
+        public static explicit operator T(NullableRef<T> reference) => reference.Value;
 
         /// <summary>
         /// Throws a <see cref="InvalidOperationException"/> when trying to access <see cref="Value"/> for a default instance.

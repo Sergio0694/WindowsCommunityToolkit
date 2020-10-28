@@ -961,6 +961,9 @@ namespace Microsoft.Toolkit.HighPerformance.Memory
         /// <summary>
         /// Defines an implicit conversion of a <see cref="Memory2D{T}"/> to a <see cref="ReadOnlyMemory2D{T}"/>
         /// </summary>
-        public static implicit operator ReadOnlyMemory2D<T>(Memory2D<T> memory) => Unsafe.As<Memory2D<T>, ReadOnlyMemory2D<T>>(ref memory);
+        public static implicit operator ReadOnlyMemory2D<T>(Memory2D<T> memory)
+        {
+            return Unsafe.As<Memory2D<T>, ReadOnlyMemory2D<T>>(ref memory);
+        }
     }
 }

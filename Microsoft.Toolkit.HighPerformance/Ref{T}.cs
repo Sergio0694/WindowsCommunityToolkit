@@ -95,9 +95,6 @@ namespace Microsoft.Toolkit.HighPerformance
         /// </summary>
         /// <param name="reference">The input <see cref="Ref{T}"/> instance.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator T(Ref<T> reference)
-        {
-            return reference.Value;
-        }
+        public static implicit operator T(Ref<T> reference) => reference.Value;
     }
 }

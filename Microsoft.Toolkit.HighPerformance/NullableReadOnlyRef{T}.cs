@@ -90,30 +90,21 @@ namespace Microsoft.Toolkit.HighPerformance
         /// </summary>
         /// <param name="reference">The input <see cref="Ref{T}"/> instance.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator NullableReadOnlyRef<T>(Ref<T> reference)
-        {
-            return new(reference.Span);
-        }
+        public static implicit operator NullableReadOnlyRef<T>(Ref<T> reference) => new(reference.Span);
 
         /// <summary>
         /// Implicitly converts a <see cref="ReadOnlyRef{T}"/> instance into a <see cref="NullableReadOnlyRef{T}"/> one.
         /// </summary>
         /// <param name="reference">The input <see cref="ReadOnlyRef{T}"/> instance.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator NullableReadOnlyRef<T>(ReadOnlyRef<T> reference)
-        {
-            return new(reference.Span);
-        }
+        public static implicit operator NullableReadOnlyRef<T>(ReadOnlyRef<T> reference) => new(reference.Span);
 
         /// <summary>
         /// Implicitly converts a <see cref="NullableRef{T}"/> instance into a <see cref="NullableReadOnlyRef{T}"/> one.
         /// </summary>
         /// <param name="reference">The input <see cref="Ref{T}"/> instance.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator NullableReadOnlyRef<T>(NullableRef<T> reference)
-        {
-            return new(reference.Span);
-        }
+        public static implicit operator NullableReadOnlyRef<T>(NullableRef<T> reference) => new(reference.Span);
 
         /// <summary>
         /// Explicitly gets the <typeparamref name="T"/> value from a given <see cref="NullableReadOnlyRef{T}"/> instance.
@@ -121,10 +112,7 @@ namespace Microsoft.Toolkit.HighPerformance
         /// <param name="reference">The input <see cref="NullableReadOnlyRef{T}"/> instance.</param>
         /// <exception cref="InvalidOperationException">Thrown if <see cref="HasValue"/> is <see langword="false"/>.</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static explicit operator T(NullableReadOnlyRef<T> reference)
-        {
-            return reference.Value;
-        }
+        public static explicit operator T(NullableReadOnlyRef<T> reference) => reference.Value;
 
         /// <summary>
         /// Throws a <see cref="InvalidOperationException"/> when trying to access <see cref="Value"/> for a default instance.
