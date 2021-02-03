@@ -14,7 +14,6 @@
     <NoBuild>true</NoBuild>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-    <DefineConstants>SOURCE_ONLY</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +29,29 @@
 
   <ItemGroup>
     <PackageReference Remove="@(PackageReference)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Extensions\TypeExtensions.cs" Link="Extensions\TypeExtensions.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Extensions\ValueTypeExtensions.cs" Link="Extensions\ValueTypeExtensions.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Generated\Guard.Collection.g.cs" Link="Generated\Guard.Collection.g.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Generated\Guard.Comparable.Numeric.g.cs" Link="Generated\Guard.Comparable.Numeric.g.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Generated\ThrowHelper.Collection.g.cs" Link="Generated\ThrowHelper.Collection.g.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Guard.Comparable.Generic.cs" Link="Guard.Comparable.Generic.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Guard.Comparable.Numeric.cs" Link="Guard.Comparable.Numeric.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Guard.cs" Link="Guard.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Guard.IO.cs" Link="Guard.IO.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Guard.String.cs" Link="Guard.String.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Guard.Tasks.cs" Link="Guard.Tasks.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Internals\Guard.Collection.Generic.ThrowHelper.cs" Link="Internals\Guard.Collection.Generic.ThrowHelper.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Internals\Guard.Comparable.Generic.ThrowHelper.cs" Link="Internals\Guard.Comparable.Generic.ThrowHelper.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Internals\Guard.Comparable.Numeric.ThrowHelper.cs" Link="Internals\Guard.Comparable.Numeric.ThrowHelper.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Internals\Guard.IO.ThrowHelper.cs" Link="Internals\Guard.IO.ThrowHelper.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Internals\Guard.String.ThrowHelper.cs" Link="Internals\Guard.String.ThrowHelper.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Internals\Guard.Tasks.ThrowHelper.cs" Link="Internals\Guard.Tasks.ThrowHelper.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\Internals\Guard.ThrowHelper.cs" Link="Internals\Guard.ThrowHelper.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\ThrowHelper.cs" Link="ThrowHelper.cs" />
+    <Compile Include="..\Microsoft.Toolkit.Diagnostics\ThrowHelper.Generic.cs" Link="ThrowHelper.Generic.cs" />
   </ItemGroup>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
