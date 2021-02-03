@@ -16,7 +16,12 @@ namespace Microsoft.Toolkit.Diagnostics
     /// <summary>
     /// Helper methods to efficiently throw exceptions.
     /// </summary>
-    public static partial class ThrowHelper
+#if PUBLIC_TYPES
+    public
+#else
+    internal
+#endif
+    static partial class ThrowHelper
     {
         /// <summary>
         /// Throws a new <see cref="ArrayTypeMismatchException"/>.

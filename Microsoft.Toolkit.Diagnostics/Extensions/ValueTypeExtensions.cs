@@ -12,7 +12,12 @@ namespace Microsoft.Toolkit.Extensions
     /// <summary>
     /// Helpers for working with value types.
     /// </summary>
-    public static class ValueTypeExtensions
+#if PUBLIC_TYPES
+    public
+#else
+    internal
+#endif
+    static class ValueTypeExtensions
     {
         /// <summary>
         /// Gets the table of hex characters (doesn't allocate, maps to .text section, see <see href="https://github.com/dotnet/roslyn/pull/24621"/>).

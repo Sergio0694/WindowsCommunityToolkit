@@ -13,7 +13,12 @@ namespace Microsoft.Toolkit.Diagnostics
     /// <summary>
     /// Helper methods to verify conditions when running code.
     /// </summary>
-    public static partial class Guard
+#if PUBLIC_TYPES
+    public
+#else
+    internal
+#endif
+    static partial class Guard
     {
         /// <summary>
         /// Asserts that the input <see cref="string"/> instance must be <see langword="null"/> or empty.

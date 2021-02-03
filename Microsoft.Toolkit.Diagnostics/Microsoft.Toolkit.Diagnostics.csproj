@@ -12,6 +12,7 @@
         - ThrowHelper: Helper methods to efficiently throw exceptions.
     </Description>
     <PackageTags>UWP Toolkit Windows IncrementalLoadingCollection String Array extensions helpers</PackageTags>
+    <DefineConstants>PUBLIC_TYPES</DefineConstants>
   </PropertyGroup>
   <Choose>
     <When Condition=" '$(TargetFramework)' == 'netstandard1.4' ">

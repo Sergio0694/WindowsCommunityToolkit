@@ -16,7 +16,12 @@ namespace Microsoft.Toolkit.Extensions
     /// <summary>
     /// Helpers for working with types.
     /// </summary>
-    public static class TypeExtensions
+#if PUBLIC_TYPES
+    public
+#else
+    internal
+#endif
+    static class TypeExtensions
     {
         /// <summary>
         /// The mapping of built-in types to their simple representation.

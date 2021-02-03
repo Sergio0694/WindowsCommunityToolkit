@@ -16,7 +16,12 @@ namespace Microsoft.Toolkit.Diagnostics
     /// Helper methods to verify conditions when running code.
     /// </summary>
     [DebuggerStepThrough]
-    public static partial class Guard
+#if PUBLIC_TYPES
+    public
+#else
+    internal
+#endif
+    static partial class Guard
     {
         /// <summary>
         /// Asserts that the input value is <see langword="null"/>.
